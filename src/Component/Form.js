@@ -5,10 +5,10 @@ class Form extends Component{
         super(props);
 
         this.state = {
-            
-            REACT_APP_EMAILJS_USERID: 'user_17Y3yksLiJyYnOXq04djD',
-            templateId: 'template_IldEFUEB',
-            receiverEmail: '',
+            //in here put the userID you got from emailjs 
+            REACT_APP_EMAILJS_USERID: '*********', 
+             //the template ID of the template you created in the emailjs
+            templateId: 'template_IldEFUEB',           
             formSubmitted: false,
             feedback: 'Test'
         }
@@ -20,22 +20,16 @@ class Form extends Component{
     onSubmit(event) {
 
         event.preventDefault();
-
-        const feedback = {
-            firstname: this.refs.firstname.value,
-            lastname: this.refs.lastname.value,
-            email: this.refs.email.value,
-            password: this.refs.password.value,
-            
-        }
+    
+     
         
         
 
-        const { templateId, receiverEmail } = this.state;
+        const { templateId } = this.state;
         
         
         
-
+                //Getting the variables from the forms
             this.sendFeedback(
                 templateId,
                 this.sender,
@@ -43,6 +37,7 @@ class Form extends Component{
                 this.state.feedback,
                 this.refs.lastname.value,
                 this.refs.firstname.value,
+                this.refs.phone.value
                 
                 
 
@@ -57,26 +52,28 @@ class Form extends Component{
         
     }
     
-    
-    sendFeedback(templateId, senderEmail, receiverEmail, feedback,lastname,firstname,cost) {
+    //In here the data is send to the mailgun server with the correct templateID
+    sendFeedback(templateId, senderEmail, receiverEmail, feedback,lastname,firstname,phone) {
         window.emailjs
             .send('mailgun', templateId, {
                 senderEmail,
                 receiverEmail,
                 feedback,
                 lastname,
-                firstname
+                firstname,
+                phone
                 
                 
                 
             })
             .then(res => {
                 console.log('MAIL SENT!')
+                alert("Mail Sent")
                 this.setState({
                     formEmailSent: true
                 });
             })
-            // Handle errors here however you like
+            // Handle errors if the mail didnt passed 
             .catch(err => console.error('Failed to send feedback. Error: ', err));
     }
 
@@ -101,28 +98,32 @@ class Form extends Component{
 
                                 <div className="input-field col s6">
                                     <i className="material-icons prefix">face</i>
-                                    <input id="firstname" type="text" className="validate" ref="firstname" required />
-                                    <label htmlFor="firstname">Frist Name</label>
+                                    <input id="firstname" type="text" className="validate" 
+                                    ref="firstname" required />
+                                   
 
                                 </div>
                                 <div className="input-field col s6">
                                     <i className="material-icons prefix">face</i>
-                                    <input id="lastname" type="text" className="validate" ref="lastname" name="lname" required />
-                                    <label htmlFor="lastname">Last Name</label>
+                                    <input id="lastname" type="text" className="validate" 
+                                    ref="lastname" name="lname" required />
+                                   
 
                                 </div>
 
 
                                 <div className="input-field col s6">
                                     <i className="material-icons prefix">email</i>
-                                    <input id="email" type="email" className="validate" ref="email" required />
-                                    <label htmlFor="email">Email</label>
+                                    <input id="email" type="email" className="validate"
+                                     ref="email" required />
+                                    
                                 </div>
 
                                 <div className="input-field col s6">
-                                    <i className="material-icons prefix">lock</i>
-                                    <input id="password" type="password" className="validate" ref="password"   />
-                                    <label htmlFor="password">Password</label>
+                                    <i className="material-icons prefix">phone</i>
+                                    <input id="phone" type="text" className="validate"
+                                     ref="phone"   />
+                                    
 
                                 </div>
 
